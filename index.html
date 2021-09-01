@@ -131,11 +131,13 @@
 
             html2canvas(document.getElementById("display")).then(function(canvas) {
 
-                navigator.clipboard.write([
-                    new ClipboardItem({
-                        'image/png': canvas.toDataURL("image/png")
-                    })
-                ]);
+                canvas.toBlob(b => {
+                    navigator.clipboard.write([
+                        new ClipboardItem({
+                            'image/png': b
+                        })
+                    ]);
+                })
 
             });
 
