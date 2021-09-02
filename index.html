@@ -37,6 +37,7 @@
             justify-content: center;
 
             flex-direction: column;
+            margin: 20px;
         }
 
         #display {
@@ -91,7 +92,9 @@
         </div>
 
         <div class='buttons'>
-            <button onclick="screenshot()">take a screenshot</button> <button onclick="copyToClipboard()">copy image to clipboard</button>
+            <button onclick="screenshot()">download image as png</button>
+            <button onclick="window.open('https://katex.org/docs/supported.html');">help</button>
+            <button onclick="copyToClipboard(this)">copy image to clipboard</button>
         </div>
 
     </main>
@@ -138,18 +141,30 @@
             document.getElementById("display").style.border = "1px solid #ccc";
         }
 
-        function copyToClipboard() {
+        function copyToClipboard(e) {
 
             document.getElementById("display").style.border = "none";
 
             html2canvas(document.getElementById("display")).then(function(canvas) {
 
                 canvas.toBlob(b => {
-                    navigator.clipboard.write([
-                        new ClipboardItem({
-                            'image/png': b
-                        })
-                    ]);
+
+                    try {
+
+                        navigator.clipboard.write([
+                            new ClipboardItem({
+                                'image/png': b
+                            })
+                        ]);
+
+                    } catch (e) {
+
+                        e.innerText = "unsupported";
+                        setInterval(() => {
+                            e.innerText = "copy image to clipboard";
+                        }, 500);
+
+                    }
                 })
 
             });
